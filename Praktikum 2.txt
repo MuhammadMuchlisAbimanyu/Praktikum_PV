@@ -1,0 +1,96 @@
+Public Class ProcedureFunction
+    Private Sub ProcedureFunction_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Call Bersih()
+
+        ListView1.GridLines = True
+        ListView1.View = View.Details
+        ListView1.Columns.Add("Kode Barang")
+        ListView1.Columns.Add("Nama Barang")
+        ListView1.Columns.Add("Satuan")
+        ListView1.Columns.Add("Harga Satuan")
+        ListView1.Columns.Add("Jumlah")
+        ListView1.Columns.Add("Total")
+
+        txtKodeBrg.Focus()
+    End Sub
+
+    Sub Bersih()
+        txtKodeBrg.Text = ""
+        txtNamaBrg.Text = ""
+        txtHrgSatuan.Text = ""
+        txtJumlah.Text = ""
+        txtTotal.Text = ""
+        txtSatuan.Text = ""
+
+        txtKodeBrg.Focus()
+        txtTotal.Enabled = False
+    End Sub
+
+    Private Function Hitung()
+        Dim Jumlah, HrgSatuan, Total As Integer
+        Jumlah = Val(txtJumlah.Text)
+        HrgSatuan = Val(txtHrgSatuan.Text)
+        Total = Jumlah * HrgSatuan
+
+        txtTotal.Text = Total
+        Return Total
+    End Function
+
+    Private Function CekDataKosong()
+        If txtKodeBrg.Text = "" Then
+            MessageBox.Show("Kode Barang Harus Diisi", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtKodeBrg.Focus()
+        ElseIf txtNamaBrg.Text = "" Then
+            MessageBox.Show("Nama Barang Harus Diisi", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtNamaBrg.Focus()
+        ElseIf txtSatuan.Text = "" Then
+            MessageBox.Show("Satuan Harus Diisi", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtSatuan.Focus()
+        ElseIf txtHrgSatuan.Text = "" Then
+            MessageBox.Show("Satuan Barang Harus Diisi", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtHrgSatuan.Focus()
+        ElseIf txtJumlah.Text = "" Then
+            MessageBox.Show("Jumlah Harus Diisi", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtJumlah.Focus()
+        End If
+        Return False
+    End Function
+
+    Private Sub bHitung_Click(sender As Object, e As EventArgs) Handles bHitung.Click
+        Call CekDataKosong()
+
+        Dim Arr(6) As String
+        Arr(0) = txtKodeBrg.Text
+        Arr(1) = txtNamaBrg.Text
+        Arr(2) = txtSatuan.Text
+        Arr(3) = txtHrgSatuan.Text
+        Arr(4) = txtJumlah.Text
+        Arr(5) = Hitung()
+
+        Dim listitem As ListViewItem
+        'listitem = New ListViewItem
+        listitem = ListView1.Items.Add(Arr(0))
+        listitem.SubItems.Add(Arr(1))
+        listitem.SubItems.Add(Arr(2))
+        listitem.SubItems.Add(Arr(3))
+        listitem.SubItems.Add(Arr(4))
+        listitem.SubItems.Add(Arr(5))
+
+        txtKodeBrg.Text = txtKodeBrg.Text + 1
+        txtKodeBrg.Focus()
+    End Sub
+
+    Private Sub bClear_Click(sender As Object, e As EventArgs) Handles bClear.Click
+        Call Bersih()
+    End Sub
+
+    Private Sub bExit_Click(sender As Object, e As EventArgs) Handles bExit.Click
+        Dim Tutup As String
+        Tutup = MessageBox.Show("Yakin tutup form ini ?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If Tutup = MsgBoxResult.Yes Then
+            End
+        Else
+            Exit Sub
+        End If
+    End Sub
+End Class
